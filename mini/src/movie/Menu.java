@@ -45,7 +45,6 @@ class Menu {
 	private static void join_membership(Connection con) throws SQLException{
 		//계정 추가.
 		Add_acount.acount(con);
-		System.out.println("teset");
 	}
 	
 	private static void user_menu(Connection con, String id) throws SQLException {
