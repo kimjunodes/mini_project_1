@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 class Menu {
+	
 	public static void menu(Connection con) throws SQLException {
 		Scanner sc = new Scanner(System.in);
 		while(true) {		
@@ -42,7 +43,8 @@ class Menu {
 		// else 로그인 실패 (다시 입력받거나 취소하는 것 추가)
 	}
 	private static void join_membership(Connection con) throws SQLException{
-		System.out.println("회원가입 메소드");
+		//계정 추가.
+		Add_acount.acount(con);
 	}
 	
 	private static void user_menu(Connection con, String id) throws SQLException {
