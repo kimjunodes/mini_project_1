@@ -24,11 +24,11 @@ public class Reservation_check extends JFrame {
 	private PreparedStatement sfmem, sfmov;
 	private String userId;
 	private ResultSet rs, rm;
-	public String lists = "";
+	public String lists = "A";
 	Frame frm;
 
-	private static final String SQL = "SELECT movie_id FROM members WHERE m_id = ?";
-	private static final String MOV = "SELECT * FROM movie WHERE m_id = ?";
+	private static String SQL = "SELECT movie_id FROM members";
+	private static String MOV = "SELECT * FROM movie ";
 
 	public Reservation_check() {
 		init();
@@ -36,21 +36,16 @@ public class Reservation_check extends JFrame {
 		conn = Main.makeConnection();
 		try {
 			sfmem = conn.prepareStatement(SQL);
-			sfmem.setString(1, "1234");
 			ResultSet rs = sfmem.executeQuery();
-			
-			sfmov = conn.prepareStatement(MOV);
-			sfmov.setInt(1, rs.getInt(1));
-			ResultSet rm = sfmov.executeQuery();
-			while (rs.next()) {
 
+			sfmov = conn.prepareStatement(MOV);
+			ResultSet rm = sfmov.executeQuery();
+			
+			while (rs.next()) {
 				String id = rm.getString("M_ID");
 				lists += id;
-				System.out.print("id : " + rs.getInt("M_ID") + "\t");
-				System.out.print("name : " + rs.getString("M_NAME") + "\t");
-				System.out.print("time : " + rs.getString("TIME") + "\t");
-				System.out.print("hall : " + rs.getString("HALL") + "\t");
-				System.out.print("seat : " + rs.getString("SEAT") + "\t");
+
+
 			}
 
 		} catch (SQLException e2) {
