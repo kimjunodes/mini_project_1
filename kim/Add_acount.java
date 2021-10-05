@@ -1,18 +1,11 @@
 package team_test;
 
-import java.awt.Button;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Scanner;
 import javax.swing.*;
 
 public class Add_acount extends JFrame{
@@ -26,7 +19,7 @@ public class Add_acount extends JFrame{
 	private static final String SearchSQL = "select m_id from members where m_id = ?";
 	private static final String InsertSQL = "insert into MEMBERS (M_ID, M_PW, P_NUMBER, M_ADDRESS) values (?, ?, ?, ?) ";
 	
-	
+	Frame frm;
 	
 	public Add_acount(){
 		init();
@@ -67,7 +60,7 @@ public class Add_acount extends JFrame{
 		});
 		
 		bt2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent a) {
 				
 				String pw = jf2.getText();
 				String pn = jf3.getText();
@@ -91,16 +84,21 @@ public class Add_acount extends JFrame{
 						
 						ist.execute();
 						JOptionPane.showMessageDialog(null, "정상적으로 회원가입 되었습니다.");
+						conn.close();
+						frm.dispose();
 					} catch (SQLException e1) {
-							JOptionPane.showMessageDialog(null, "개발자의 미슥테이크");
+							JOptionPane.showMessageDialog(null, "중복 확인을 해주세요.");
 					}
 				}
 			}
+			
 		});
+		
+		
 	}
 	
 	private void init() {
-		Frame frm = new Frame("회원가입");
+		frm = new Frame("회원 가입");
 		
 		bt1 = frm.setButton("중복 확인", 360, 110, 100, 40);
 		bt2 = frm.setButton("회원 가입", 360, 170, 100, 40);
@@ -137,6 +135,7 @@ public class Add_acount extends JFrame{
 	
 	public static void main(String[] args) {
 		new Add_acount();
+		
 	}
 	
 		
