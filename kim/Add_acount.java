@@ -11,7 +11,7 @@ import javax.swing.*;
 public class Add_acount extends JFrame{
 	private JLabel lbl1, lbl2, lbl3, lbl4;
 	private static JTextField jf1, jf2, jf3, jf4;
-	public static JButton bt1, bt2;
+	public static JButton bt1, bt2, bt3;
 	
 	private static Connection conn;
 	private static PreparedStatement sst, ist;
@@ -86,6 +86,7 @@ public class Add_acount extends JFrame{
 						JOptionPane.showMessageDialog(null, "정상적으로 회원가입 되었습니다.");
 						conn.close();
 						frm.dispose();
+						Main_menu.main(null);
 					} catch (SQLException e1) {
 							JOptionPane.showMessageDialog(null, "중복 확인을 해주세요.");
 					}
@@ -94,7 +95,12 @@ public class Add_acount extends JFrame{
 			
 		});
 		
-		
+		bt3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent a) {
+				frm.dispose();
+				Main_menu.main(null);
+			}
+		});
 	}
 	
 	private void init() {
@@ -102,6 +108,7 @@ public class Add_acount extends JFrame{
 		
 		bt1 = frm.setButton("중복 확인", 360, 110, 100, 40);
 		bt2 = frm.setButton("회원 가입", 360, 170, 100, 40);
+		bt3 = frm.setButton("뒤로 가기", 360, 230, 100, 40);
 		
 		lbl1 = new JLabel("ID : ");
 		lbl1.setBounds(25, 110, 70, 30);
