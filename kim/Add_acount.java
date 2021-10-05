@@ -86,6 +86,7 @@ public class Add_acount extends JFrame{
 						JOptionPane.showMessageDialog(null, "정상적으로 회원가입 되었습니다.");
 						conn.close();
 						frm.dispose();
+						Main_menu.main(null);
 					} catch (SQLException e1) {
 							JOptionPane.showMessageDialog(null, "중복 확인을 해주세요.");
 					}
