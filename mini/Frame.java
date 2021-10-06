@@ -1,4 +1,4 @@
-package test;
+package movie;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,7 +30,12 @@ class Frame extends JFrame {
         
         exit.setBounds(400, 300, 60, 30);
 		exit.addActionListener(event -> {
-			System.exit(0);
+			try {
+				con.close();
+				System.exit(0);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	    });
 	}
 	JButton setButton(String title,int x, int y, int width, int height) {

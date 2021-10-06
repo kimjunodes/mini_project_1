@@ -1,4 +1,4 @@
-package test;
+package movie;
 
 import java.awt.Event;
 import java.awt.Font;
@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -22,18 +23,20 @@ import javax.swing.JOptionPane;
 
 class Ticket extends Frame{
 	Vector<String> lst1 = new Vector<String>(); 
-	Vector<String> lst2 = new Vector<String>(); 
 	Connection con;
 	String id;
 	ResultSet rs = null;
 	PreparedStatement psmt = null;
 	String sql = null;
-	JButton check = setButton("예매\n하기",375,150,85,50);
-	JButton back = setButton("뒤로\n가기",375,200,85,50);
+	JButton check = setButton("예약확인",375,150,85,50);
+	JButton back = setButton("메뉴보기",375,200,85,50);
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일 HH시 mm분");
 	JComboBox jBox1 = null;
 	JComboBox jBox2 = new JComboBox();
 	String name;
 	String date;
+	int M_id;
+	Timestamp da;
 	JLabel lbl1= null;
 	JLabel lbl2=null;
 	
@@ -59,9 +62,22 @@ class Ticket extends Frame{
 			public void actionPerformed(ActionEvent e) {
 				name = jBox1.getSelectedItem().toString();
 				date = jBox2.getSelectedItem().toString();
-				int result = JOptionPane.showConfirmDialog(null, date + "\n"+ name,"예매 확인",JOptionPane.YES_NO_OPTION);
+				try {
+		        	sql = "select * from movie where M_NAME='" + name +"'";
+		        	psmt = con.prepareStatement(sql);	
+		        	rs = psmt.executeQuery();
+		    		while(rs.next()) {
+		    			if(date.equals(simpleDateFormat.format(rs.getTimestamp("TIME")))) {
+		    				M_id = rs.getInt("M_ID");
+		    			}
+		    		}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				int result = JOptionPane.showConfirmDialog(null, "영화 시간 : " + date + "\n"
+							+"영화명 : "+ name,"예매 확인",JOptionPane.YES_NO_OPTION);
 		        if (result == 0) {
-		        	new Ticket_m(con, "예매 확인",id);
+		        	new Ticket_m(con, "예매 확인",id ,M_id);
 		        	dispose();
 		        }
 			}
@@ -79,25 +95,32 @@ class Ticket extends Frame{
 		// box1 설정 이벤트
 		jBox1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lst2.clear();
 				jBox2.removeAllItems();
 				try {
 		    		name= jBox1.getSelectedItem().toString();
 		        	sql = "select * from movie where M_NAME='" + name +"'";
 		        	psmt = con.prepareStatement(sql);	
 		        	rs = psmt.executeQuery();
-		    		
 		    		String date= null;
 		    		while(rs.next()) {
-		    			date = rs.getString("TIME").substring(5,7) +"월 "+
-		    				   rs.getString("TIME").substring(8,10) + "일 "+
-		    				   rs.getString("TIME").substring(11,13) + "시 "+
-		    				   rs.getString("TIME").substring(14,16) + "분";
+		    			da = rs.getTimestamp("TIME");
+		    			date = simpleDateFormat.format(da);
 		    			jBox2.addItem(date);
+		    			
 		    		}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
+				name = jBox1.getSelectedItem().toString();
+				date = jBox2.getSelectedItem().toString();
+			}
+			
+		});
+		jBox2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
 			}
 		});
 	}

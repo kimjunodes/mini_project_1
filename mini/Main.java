@@ -1,4 +1,4 @@
-package test;
+package movie;
 import java.awt.Menu;
 import java.sql.*;
 import java.util.Scanner;
@@ -16,14 +16,12 @@ public class Main {
 	         System.out.println("JDBC 드라이버를 찾지 못했습니다...");
 	      } catch (SQLException e) {
 	         System.out.println("데이터베이스 연결 실패");
-	         
 	      }
 	      return con;
 	   }
 	
 	public static void main(String[] args) throws SQLException  {
 		Connection con = makeConnection();
-		Frame f = new Main_menu(con);
-		con.close();
+		new Main_menu(con);
 	}
 }
