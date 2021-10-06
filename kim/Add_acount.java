@@ -147,4 +147,3 @@ public class Add_acount extends JFrame{
 	
 		
 }
-
