@@ -46,11 +46,11 @@ public class Reservation_check extends JFrame {
 				
 				lists += "영화 제목: " + rm.getString(2) + "\n" + 
 						"영화 시간: " + rm.getString(3).substring(5,16) +"\n" +
-						"상영 관: " + rm.getInt(4) + "관";
+						"상영관: " + rm.getInt(4) + "관";
 
 				messageBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						JOptionPane.showMessageDialog(null, lists, "Message", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, lists, "예매확인", JOptionPane.INFORMATION_MESSAGE);
 					}
 				});
 			}
