@@ -1,4 +1,4 @@
-package test;
+package movie;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
 
 class UserFrame extends Frame {
 	JButton ticket = setButton("영화 예매",40,100,210,75);
@@ -22,17 +23,33 @@ class UserFrame extends Frame {
 	JButton log_out = setButton("로그아웃",250, 250, 150, 75);
 	Connection con;
 	String id;
-	private String lists;
+	
+	private String lists="";
 	UserFrame(Connection con,String title, String id) {
 		super(con, title);
-		this.con = con;
 		this.id = id;
+
 		exit.setBounds(400,250,60,75);
 		
 		ticket.addActionListener(event -> {
-			setVisible(false);
 			try {
-				new Ticket(con, ticket.getText(),id);
+				String sql = "select * from ticket";
+				PreparedStatement psmt = con.prepareStatement(sql);
+				ResultSet rs = psmt.executeQuery();
+				
+				boolean b = false;
+				while(rs.next()) {
+					if(rs.getString("U_ID").equals(id)) {
+						b = true;
+						break;
+					}
+				}
+				if(b == false) {
+					new Ticket(con, ticket.getText(),id);
+					dispose();
+				}else
+					JOptionPane.showMessageDialog(null, "1인당 1개의 예약을 할 수 있습니다.");
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -41,6 +58,7 @@ class UserFrame extends Frame {
 		ticket_check.addActionListener(event -> {
 			// 예매 정보 확인 메세지 창
 			try {
+				lists="";
 				String MOV = "SELECT * FROM TICKET";
 				PreparedStatement pstmt = con.prepareStatement(MOV);
 				ResultSet rm = pstmt.executeQuery();
