@@ -2,9 +2,9 @@ package test;
 
 import java.sql.Connection;
 
-class User_info extends Frame {
+class movie_info extends Frame {
 	Connection con;
-	User_info(Connection con,String lbl, String id) {
+	movie_info(Connection con,String lbl) {
 		super(con,lbl);
 	}
 

@@ -1,12 +1,9 @@
 package test;
- 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.awt.Menu;
+import java.sql.*;
+import java.util.Scanner;
 
-import javax.swing.JButton;
- 
-public class Test2 {
+public class Main {
 	public static Connection makeConnection() {
 	      String url = "jdbc:oracle:thin:@localhost:1521:xe";
 	      Connection con = null;
@@ -23,15 +20,10 @@ public class Test2 {
 	      }
 	      return con;
 	   }
-    public static void main(String[] args) {
-    	Connection con = makeConnection();
-        Frame frm = new Frame(con,"Bit Cinema");
-        JButton j = frm.setButton("·Î±×ÀÎ",200,200,100,30);
-        
-        j.addActionListener(event -> {
-        	frm.setVisible(false);
-        	UserFrame f = new UserFrame(con,"User Menu","abcd");
-        });
-        frm.setVisible(true);
-    }
+	
+	public static void main(String[] args) throws SQLException  {
+		Connection con = makeConnection();
+		new Main_menu(con);
+		con.close();
+	}
 }

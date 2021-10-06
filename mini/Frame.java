@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-import test.Frame;
-
 class Frame extends JFrame {
+	Connection con;
 	JButton exit = new JButton("EXIT");
-	Frame(String lbl){
+	Frame(Connection con,String lbl){
+		this.con= con;
 		setSize(500,400);
 		setTitle("Bit Cinema");
 		getContentPane().add(exit);

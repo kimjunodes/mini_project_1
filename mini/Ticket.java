@@ -23,7 +23,8 @@ import javax.swing.JOptionPane;
 class Ticket extends Frame{
 	Vector<String> lst1 = new Vector<String>(); 
 	Vector<String> lst2 = new Vector<String>(); 
-	Connection con = makeConnection();
+	Connection con;
+	String id;
 	ResultSet rs = null;
 	PreparedStatement psmt = null;
 	String sql = null;
@@ -37,9 +38,11 @@ class Ticket extends Frame{
 	JLabel lbl2=null;
 	
 	
-	Ticket(String lbl) throws SQLException{
-		super(lbl);
-
+	Ticket(Connection con, String lbl, String id) throws SQLException{
+		super(con,lbl);
+		this.con = con;
+		this.id = id;
+		
 		exit.setBounds(375, 300, 85, 40);
 		comboBox_init();
 		lbl1 = setLabel("영화 제목" , 50,150,150,30);
@@ -58,12 +61,21 @@ class Ticket extends Frame{
 				date = jBox2.getSelectedItem().toString();
 				int result = JOptionPane.showConfirmDialog(null, date + "\n"+ name,"예매 확인",JOptionPane.YES_NO_OPTION);
 		        if (result == 0) {
-		        	new Ticket_m("예매 확인");
-		        	setVisible(false);
+		        	new Ticket_m(con, "예매 확인",id);
+		        	dispose();
 		        }
 			}
 		});
 		
+		// 뒤로가기 버튼 이벤트
+		back.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new UserFrame(con,"User Menu",id);
+				
+			}
+		});
 		// box1 설정 이벤트
 		jBox1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

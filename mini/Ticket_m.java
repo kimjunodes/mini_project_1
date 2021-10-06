@@ -1,9 +1,11 @@
 package test;
 
-class Ticket_m extends Frame{
+import java.sql.Connection;
 
-	Ticket_m(String lbl) {
-		super(lbl);
+class Ticket_m extends Frame{
+	Connection con;
+	Ticket_m(Connection con, String lbl, String id) {
+		super(con,lbl);
 	}
 
 }
