@@ -25,7 +25,6 @@ class UserFrame extends Frame {
 			try {
 				Ticket a = new Ticket(ticket.getText());
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	    });
