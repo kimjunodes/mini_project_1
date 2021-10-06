@@ -17,16 +17,25 @@ import java.sql.SQLException;
 import javax.swing.*;
 
 class Main_menu extends Frame {
-	Connection con ;
 	private final String sql;
 	private final String sql2;
 	private final String sql3;
+	
+	public static JLabel lb1, lb2;
+	public static JTextField tf, pn;
+	public static JPasswordField pf;
+	public static JButton bt1, bt2, bt3, bt4;
+	
+	private static Connection con;
+	private static PreparedStatement I;
+	
+	
 	Main_menu(Connection con) {
-		super(con,"1인 영화관 예매 시스템");
+		super(con,"예매 시스템");
 		this.con = con;
-		sql = "select * from members where (m_id = '?' AND m_pw = '?')";
-		sql2 = "select * from members where p_number = '?'";
-		sql3 = "select * from members where m_id = '?' AND p_number = '?'";
+		sql = "select * from members where (m_id = ? AND m_pw = ?)";
+		sql2 = "select * from members where p_number = ?";
+		sql3 = "select * from members where m_id = ? AND p_number = ?";
 		
 		
 		JLabel lb1 = new JLabel("ID :");
@@ -48,23 +57,26 @@ class Main_menu extends Frame {
 				String id = tf.getText();
 				String pw = pf.getText();			
 				try {
-					PreparedStatement I = con.prepareStatement(sql);
+					I = con.prepareStatement(sql);
 					I.setString(1, id);
 					I.setString(2, pw);
 					ResultSet rs = I.executeQuery();
 					
 					if(rs.next()) {
-						if(rs.getString(1) != "0") {
-							JOptionPane.showMessageDialog(null, "user 계정입니다.");
-							new UserFrame(con,bt1.getText(),id);
-						} else {
+						if("admin".equals(rs.getString(1))) {
 							JOptionPane.showMessageDialog(null, "admin 계정입니다.");
+							dispose();
+							new AdminFrame(con, "Admin Menu");
+						} else {
+							JOptionPane.showMessageDialog(null, "user 계정입니다.");
+							dispose();
+							new UserFrame(con,"User Menu",id);
 						}
 					} else {
 						JOptionPane.showMessageDialog(null, "잘못된 아이디 또는 패스워드 입니다.");
 					}
 				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(null, "DB에 연결되지 않았습니다.1");
+					JOptionPane.showMessageDialog(null, "시스템 오류. 1");
 				}
 			}	
 		});
@@ -73,9 +85,8 @@ class Main_menu extends Frame {
 	      bt2.setBounds(375, 190, 95, 50);      
 	      bt2.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
-	            Add_acount ac = new Add_acount(con,bt2.getText());
+	            new Add_acount(con,bt2.getText());
 	            dispose();
-	            
 	         }   
 	      });
 		
@@ -89,7 +100,7 @@ class Main_menu extends Frame {
 				try {
 					pnum = JOptionPane.showInputDialog("전화번호를 입력하세요.");
 					
-					PreparedStatement I = con.prepareStatement(sql2);
+					I = con.prepareStatement(sql2);
 					I.setString(1, pnum);
 					ResultSet rs = I.executeQuery();
 
@@ -99,7 +110,7 @@ class Main_menu extends Frame {
 						JOptionPane.showMessageDialog(null, "일치하는 전화번호가 없습니다.");
 					}
 				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(null, "DB에 연결되지 않았습니다.2");
+					JOptionPane.showMessageDialog(null, "시스템 오류. 2");
 				}
 			}	
 		});

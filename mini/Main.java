@@ -23,7 +23,7 @@ public class Main {
 	
 	public static void main(String[] args) throws SQLException  {
 		Connection con = makeConnection();
-		new Main_menu(con);
+		Frame f = new Main_menu(con);
 		con.close();
 	}
 }

@@ -8,19 +8,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.*;
 
-public class Add_acount extends Frame{
+class Add_acount extends Frame{
 	private JLabel lbl1, lbl2, lbl3, lbl4;
 	private JTextField jf1, jf2, jf3, jf4;
 	private JButton bt1, bt2, bt3;
 	
-	private Connection conn;
 	private PreparedStatement sst, ist;
 	
 	private static final String SearchSQL = "select m_id from members where m_id = ?";
 	private static final String InsertSQL = "insert into MEMBERS (M_ID, M_PW, P_NUMBER, M_ADDRESS) values (?, ?, ?, ?) ";
 	
-	Frame frm;
 	Connection con;
+	
+	
 	Add_acount(Connection con,String lbl){
 		super(con,lbl);
 		this.con = con;
@@ -58,9 +58,8 @@ public class Add_acount extends Frame{
 		
 		setVisible(true);
 		
-		conn = Main.makeConnection();
 		try {
-			ist = conn.prepareStatement(InsertSQL);
+			ist = con.prepareStatement(InsertSQL);
 		} catch (SQLException e2) {
 			JOptionPane.showMessageDialog(null, "개발자의 미슥테이크");
 		}
@@ -69,7 +68,7 @@ public class Add_acount extends Frame{
 			public void actionPerformed(ActionEvent e) {
 				String id = jf1.getText();
 				try {
-					sst = conn.prepareStatement(SearchSQL);
+					sst = con.prepareStatement(SearchSQL);
 					sst.setString(1, id);
 					ResultSet rs = sst.executeQuery();
 				
@@ -118,7 +117,6 @@ public class Add_acount extends Frame{
 						
 						ist.execute();
 						JOptionPane.showMessageDialog(null, "정상적으로 회원가입 되었습니다.");
-						conn.close();
 						dispose();
 						new Main_menu(con);
 					} catch (SQLException e1) {

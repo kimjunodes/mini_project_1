@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
  
 public class Test2 {
-	public static Connection makeConnection() {
+	private static Connection makeConnection() {
 	      String url = "jdbc:oracle:thin:@localhost:1521:xe";
 	      Connection con = null;
 	      try {
