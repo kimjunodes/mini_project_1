@@ -24,7 +24,6 @@ public class Cancle_reservation extends JFrame {
 	public static JButton messageBtn;
 	private static Connection conn;
 	private ResultSet rs, rm, rt;
-	private String lists = "";
 	private int flag;
 	private Properties info = null;
 	Frame frm;
@@ -55,6 +54,10 @@ public class Cancle_reservation extends JFrame {
 								String Del = "UPDATE members SET movie_id = NULL where m_id = 'qwer'";
 								PreparedStatement dst = conn.prepareStatement(Del);
 								dst.executeUpdate(Del);
+								
+								JOptionPane.showMessageDialog(null, "취소가 완료되었습니다.", 
+										"예매취소", JOptionPane.INFORMATION_MESSAGE);
+								
 
 							} catch (SQLException e2) {
 								JOptionPane.showMessageDialog(null, "개발자의 미슥테이크2");
