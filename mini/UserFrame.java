@@ -29,6 +29,8 @@ class UserFrame extends Frame {
 	
 	Connection con;
 	String id;
+	String sql;
+	int result;
 	
 	private String lists="";
 	UserFrame(Connection con,String title, String id) {
@@ -36,6 +38,35 @@ class UserFrame extends Frame {
 		this.id = id;
 
 		exit.setBounds(400,250,60,75);
+		
+		try {
+			sql = "select * from ticket";
+			psmt = con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while (rs.next()) {
+				if(rs.getString("USER_ID").equals(id)) {	
+					movieId = rs.getInt("M_ID");
+					break;
+				}
+			}
+			
+			lists="";
+			String MOV = "SELECT * FROM MOVIE";
+			PreparedStatement pstmt = con.prepareStatement(MOV);
+			ResultSet rm = pstmt.executeQuery();
+			while (rm.next()) {
+				if(rm.getInt("M_ID") == movieId) {
+					da = rm.getTimestamp("M_TIME");
+					date = simpleDateFormat.format(da);
+					lists += "영화 제목: " + rm.getString("M_NAME") + "\n" + 
+						"영화 시간: " + date +"\n" +
+						"상영관: " + rm.getInt("HALL") + "관";
+					break;
+				}
+			}
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
 		
 		ticket.addActionListener(new ActionListener() {
 			@Override
@@ -64,46 +95,41 @@ class UserFrame extends Frame {
 		
 		ticket_check.addActionListener(event -> {
 			// 예매 정보 확인 메세지 창
-			try {
-				String sql = "select * from ticket";
-				psmt = con.prepareStatement(sql);
-				rs = psmt.executeQuery();
-				while (rs.next()) {
-					if(rs.getString("USER_ID").equals(id)) {	
-						movieId = rs.getInt("M_ID");
-						break;
-					}
-				}
-				
-				lists="";
-				String MOV = "SELECT * FROM MOVIE";
-				PreparedStatement pstmt = con.prepareStatement(MOV);
-				ResultSet rm = pstmt.executeQuery();
-				while (rm.next()) {
-					if(rm.getInt("M_ID") == movieId) {
-						da = rm.getTimestamp("M_TIME");
-						date = simpleDateFormat.format(da);
-						lists += "영화 제목: " + rm.getString("M_NAME") + "\n" + 
-							"영화 시간: " + date +"\n" +
-							"상영관: " + rm.getInt("HALL") + "관";
-						break;
-					}
-				}	
-				if(lists.isEmpty())
-					JOptionPane.showMessageDialog(null, "예매한 목록이 없습니다.","예매확인", JOptionPane.INFORMATION_MESSAGE);
-				else
-					JOptionPane.showMessageDialog(null, lists, "예매확인", JOptionPane.INFORMATION_MESSAGE);
-				
-			}catch (SQLException e2) {
-				System.out.println(e2.getMessage());
-			JOptionPane.showMessageDialog(null, "개발자의 미슥테이크");
-			
-			}
-	    });
+			if(lists.isEmpty())
+				JOptionPane.showMessageDialog(null, "예매한 목록이 없습니다.","예매확인", JOptionPane.INFORMATION_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(null, lists, "예매확인", JOptionPane.INFORMATION_MESSAGE);
+		});
 		
 		ticket_cancel.addActionListener(event -> {
 			// 예매 정보와 YES NO 확인 창 생성
-	    });
+			if(lists.isEmpty())
+				JOptionPane.showMessageDialog(null, "예매한 목록이 없습니다.","예매확인", JOptionPane.INFORMATION_MESSAGE);
+			else {
+				result = JOptionPane.showConfirmDialog(null, lists + "\n"+
+						"해당 영화를 삭제 하시겠습니까?", "예매확인",JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					//삭제(ticket테이블 삭제, 유저 update)
+					try {
+						sql = "delete from ticket where User_id = ?";
+						psmt =con.prepareStatement(sql);
+						psmt.setString(1, id);
+						psmt.execute();
+						
+						sql = "update MEMbers set Ticket_ID = NULL where USER_ID = ?";
+						psmt =con.prepareStatement(sql);
+						psmt.setString(1, id);
+						psmt.execute();
+						dispose();
+						new UserFrame(con,"User Menu",id);
+						
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					
+				}
+			}
+		});
 		
 		movie_info.addActionListener(event -> {
 			setVisible(false);
@@ -112,7 +138,7 @@ class UserFrame extends Frame {
 		
 		user_info.addActionListener(event -> {
 			setVisible(false);
-			new User_info(con, user_info.getText(),id);
+			new Modify_member(con, "xodud");
 	    });
 		log_out.addActionListener(event -> {
 			// 로그인창 생성
