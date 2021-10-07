@@ -19,7 +19,6 @@ class Del_movie extends Frame{
 	JButton del, logout;
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일 HH시 mm분");
 	PreparedStatement psmt, psmt1;
-	Connection conn;
 	String sql = null;
 	String sql1 = null;
 	String name, date;
@@ -34,7 +33,6 @@ class Del_movie extends Frame{
 		super(title);
 		this.con = con;
 		
-		exit.setBounds(375, 300, 85, 40);
 		comboBox_init();
 		
 		JButton del = setButton("영화 삭제",375, 120, 90, 50);
@@ -58,19 +56,20 @@ class Del_movie extends Frame{
 				try {
 					name= jbox1.getSelectedItem().toString();
 		        	sql = "select * from movie where M_NAME='" + name +"'";
-		        	psmt = con.prepareStatement(sql);	
+		        	psmt = con.prepareStatement(sql);
 		        	rs = psmt.executeQuery();
 		    		String date= null;
-		    		while(rs.next()) {
-		    			da = rs.getTimestamp("m_time");
-		    			date = simpleDateFormat.format(da);
-		    			jbox2.addItem(date);
+		    		if(rs.next()) {
+		    			while(rs.next()) {
+		    				da = rs.getTimestamp("m_time");
+		    				date = simpleDateFormat.format(da);
+		    				jbox2.addItem(date);
+		    			}
 		    		}
+		    		
 				}catch(SQLException e1) {
 					JOptionPane.showMessageDialog(null, "오류 발생... admin_del.jbox1");
 				}
-				name = jbox1.getSelectedItem().toString();
-				date = jbox2.getSelectedItem().toString();
 			}
 
 		});
@@ -83,30 +82,59 @@ class Del_movie extends Frame{
 		
 		del.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				name = jbox1.getSelectedItem().toString();
-				date = jbox2.getSelectedItem().toString();
-				System.out.println(date);
 				try {
-					sql = "select * from movie where M_NAME='" + name +"'";
-					psmt = con.prepareStatement(sql);
-					rs = psmt.executeQuery();
-					while(rs.next()) {
-						if(date.equals(simpleDateFormat.format(rs.getTimestamp("m_time")))) {
-		    				m_id = rs.getInt("M_ID");
-		    			}
-					}
-					
-					int result = 0;
-					result = JOptionPane.showConfirmDialog(null, "해당 영화를 삭제하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
-					if (result == JOptionPane.YES_OPTION) {
-						sql1 = "delete from movie where m_id = ?";
-						psmt1 = con.prepareStatement(sql1);
-						psmt1.setInt(1, m_id);
-						psmt1.execute();
+					name = jbox1.getSelectedItem().toString();
+					date = jbox2.getSelectedItem().toString();
+					try {
+						sql = "select * from movie where M_NAME='" + name +"'";
+						psmt = con.prepareStatement(sql);
+						rs = psmt.executeQuery();
 						
-						JOptionPane.showMessageDialog(null, "정상적으로 삭제되었습니다.");
-						dispose();
-						new Del_movie(con, "삭제 완료.");
+						
+						while(rs.next()) {
+							if(date.equals(simpleDateFormat.format(rs.getTimestamp("m_time")))) {
+			    				m_id = rs.getInt("M_ID");
+			    			}
+						}
+						
+						int result = 0;
+						result = JOptionPane.showConfirmDialog(null, "해당 영화를 삭제하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+						if (result == JOptionPane.YES_OPTION) {
+							sql1 = "delete from movie where m_id = ?";
+							psmt1 = con.prepareStatement(sql1);
+							psmt1.setInt(1, m_id);
+							psmt1.execute();
+							
+							JOptionPane.showMessageDialog(null, "정상적으로 삭제되었습니다.");
+							dispose();
+							new Del_movie(con, "삭제 완료.");
+						}
+						else if (result == JOptionPane.CLOSED_OPTION) {
+							JOptionPane.showMessageDialog(null, "취소되었습니다.");
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "취소되었습니다.");
+						}
+						
+					} catch (SQLException e1) {
+						JOptionPane.showMessageDialog(null, "오류 발생... admin_del.del");
+					}
+				}catch (NullPointerException e2) {
+					int result = 0;
+					result = JOptionPane.showConfirmDialog(null, "해당 영화에 배정된 시간이 없습니다. "
+							+ "해당 영화를 삭제하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						sql1 = "delete from movie_table where m_name = '" + name + "'";
+						try {
+							psmt1 = con.prepareStatement(sql1);
+							psmt1.execute();
+							JOptionPane.showMessageDialog(null, "정상적으로 삭제되었습니다.");
+							dispose();
+							new Del_movie(con, "삭제 완료.");
+						} catch (SQLException e1) {
+							JOptionPane.showMessageDialog(null, "에러 멈춰");
+						}
+						
 					}
 					else if (result == JOptionPane.CLOSED_OPTION) {
 						JOptionPane.showMessageDialog(null, "취소되었습니다.");
@@ -114,17 +142,15 @@ class Del_movie extends Frame{
 					else {
 						JOptionPane.showMessageDialog(null, "취소되었습니다.");
 					}
-					
-				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(null, "오류 발생... admin_del.del");
 				}
+				
 			}
 		});
 		
 		logout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new Main();
+				new Admin(con);
 			}
 		});
 		
@@ -142,8 +168,8 @@ class Del_movie extends Frame{
 		}
 		jbox1 = new JComboBox(lst1);
 		jbox1.setBounds(30,200,150,30);
-		jbox1.setEditable(true);
-		jbox2.setEditable(true);
+		jbox1.setEditable(false);
+		jbox2.setEditable(false);
 		jbox2.setBounds(180,200,150,30);
 		this.add(jbox1);
 		this.add(jbox2);
