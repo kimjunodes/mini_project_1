@@ -23,6 +23,7 @@ class Ticket_m extends Frame{
 	JLabel lbl_number;
 	JLabel lbl4;
 	String sql;
+	int t = 0;
 	JRadioButton cash;
 	JRadioButton card;
 	ButtonGroup bgp;
@@ -33,18 +34,25 @@ class Ticket_m extends Frame{
 	JButton check;
 	JButton back;
 	
-	Ticket_m(Connection con, String string, String id, int m_id) {
+	Ticket_m(Connection con, String id, int m_id) {
 		super(con,"예약 정보 확인");
 		check = setButton("예매",375,100,85,50);
 		back = setButton("메뉴보기",375,150,85,50);
-		 
-		sql = "select * from movie where M_id= " + m_id ;
+		
     	try {
+    		sql = "select * from ticket";
+			psmt = con.prepareStatement(sql);
+			ResultSet rs = psmt.executeQuery();
+			while(rs.next()) {
+				t = rs.getInt("TICKET_ID") + 1;
+			}
+			
+			sql = "select * from movie where M_id= " + m_id ;
 			psmt = con.prepareStatement(sql);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 				lbl_name = setLabel(rs.getString("M_NAME"), 150, 100, 225, 30);
-				lbl_time = setLabel(rs.getString("TIME"), 150, 150, 225, 30);
+				lbl_time = setLabel(rs.getString("M_TIME"), 150, 150, 225, 30);
 				lbl_number = setLabel(rs.getString("HALL"), 150, 200, 225, 30);
 			}
 		} catch (SQLException e1) {
@@ -81,14 +89,31 @@ class Ticket_m extends Frame{
 			public void actionPerformed(ActionEvent e) {
 				if(cash.isSelected()) {
 					// 현금으로 결제한다는 것 추가
+					try {
+						sql = "Insert into ticket values (?, ?, ?,'cash','NO')";
+						psmt = con.prepareStatement(sql);
+						psmt.setInt(1, t);
+						psmt.setInt(2, m_id);
+						psmt.setString(3, id);
+						psmt.execute();
+						
+						sql = "update members set Ticket_ID = ? where USER_ID = ?";
+						psmt =con.prepareStatement(sql);
+						psmt.setInt(1, t);
+						psmt.setString(2,id);
+						psmt.execute();
+						
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}	
+					
 					JOptionPane.showMessageDialog(null, "예약되었습니다.");
 					dispose();
 					new UserFrame(con,"User Menu",id);
 				}else {
 					// 카드 결제 창 열기
-					
 					dispose();
-					new card(con,"카드 결제",id, m_id);
+					new card(con,"카드 결제",id, m_id, t,lbl_name.getText());
 				}
 			}
 		});
