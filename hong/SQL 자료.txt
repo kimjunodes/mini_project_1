@@ -1,0 +1,143 @@
+insert into members values (
+    'admin',
+    'admin',
+    '010-1234-5678',
+    'Gangdong-gu, Seoul',
+    '0'
+);
+
+insert into members values (
+    'xodud',
+    '0830xo',
+    '010-9338-9765',
+    'Mapo-gu, Seoul',
+    '1'
+);
+
+insert into members values (
+    'tkwls',
+    'wlstk01',
+    '010-8425-1527',
+    'Suyeong-gu, Busan',
+    '2'
+);
+
+insert into members values (
+    'tlwkq98',
+    '9805wlrkq',
+    '010-7815-4252',
+    'Ansan, Gyeonggi-do',
+    ''
+);
+
+insert into members values (
+    'qqosem0802',
+    '0802qos',
+    '010-5521-7455',
+    'Dangjeong, Gyeonggi-do',
+    ''
+);
+
+insert into members values (
+    'ssan2',
+    'sssanE2',
+    '010-1275-3695',
+    'Suwon, Gyeonggi-do',
+    ''
+);
+
+insert into movie_table values (
+    'WALL-E',
+    'Ban',
+    'Andrew',
+    '21/10/11',
+    '104',
+    '00',
+    'The next generation hero, he has set out to save the Earth!'
+);
+
+insert into movie_table values (
+    'SAVING PRIVATE RYAN',
+    'Tom',
+    'Steven',
+    '21/10/12',
+    '170',
+    '15',
+    'A representative work on the landing operation in Normandy, a true victory led by comradeship in a fierce battle'
+);
+
+insert into movie_table values (
+    'Titanic',
+    'Reonardo',
+    'James',
+    '21/10/12',
+    '194',
+    '15',
+    'One destiny, one love, The love story of the century that will be remembered forever'
+);
+
+insert into movie values (
+    '1',
+    'WALL-E',
+    to_date('21/10/11 18:30:00','rr/mm/dd HH24:mi:ss'),
+    '1'
+);
+insert into movie values (
+    '2',
+    'WALL-E',
+    to_date('21/10/11 21:15:00','rr/mm/dd HH24:mi:ss'),
+    '3'
+);
+insert into movie values (
+    '3',
+    'SAVING PRIVATE RYAN',
+    to_date('21/10/12 08:45:00','rr/mm/dd HH24:mi:ss'),
+    '5'
+);
+insert into movie values (
+    '4',
+    'Titanic',
+    to_date('21/10/12 12:17:00','rr/mm/dd HH24:mi:ss'),
+    '4'
+);
+insert into movie values (
+    '5',
+    'WALL-E',
+    to_date('21/10/11 15:07:00','rr/mm/dd HH24:mi:ss'),
+    '2'
+);
+insert into movie values (
+    '6',
+    'Titanic',
+    to_date('21/10/12 18:25:00','rr/mm/dd HH24:mi:ss'),
+    '3'
+);
+insert into movie values (
+    '7',
+    'SAVING PRIVATE RYAN',
+    to_date('21/10/12 22:55:00','rr/mm/dd HH24:mi:ss'),
+    '1'
+);
+insert into movie values (
+    '8',
+    'Titanic',
+    to_date('21/10/12 10:20:00','rr/mm/dd HH24:mi:ss'),
+    '4'
+);
+insert into movie values (
+    '9',
+    'SAVING PRIVATE RYAN',
+    to_date('21/10/12 22:55:00','rr/mm/dd HH24:mi:ss'),
+    '5'
+);
+
+insert into ticket values (
+    '1',
+    '1',
+    'xodud'
+);
+insert into ticket values (
+    '2',
+    '2',
+    'tkwls'
+);
