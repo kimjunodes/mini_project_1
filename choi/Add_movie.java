@@ -10,6 +10,10 @@ import javax.swing.*;
 class Add_movie extends Frame {
 	Connection con;
 	
+	public void JButton() {
+		JButton exit = new JButton("EXIT");	
+	}
+	
 	public static JButton bt1, bt2, bt3;
 	public static JLabel lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9;
 	public static JTextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9;
@@ -17,22 +21,16 @@ class Add_movie extends Frame {
 	Add_movie(Connection con, String adm) throws SQLException {
 		super(adm);
 		this.con = con;
-	
 		
+		exit.setBounds(650, 500, 60, 30);
+
 		bt1 = new JButton("영화 추가");
 		bt1.setBounds(575, 150, 150, 100);
 		
 		bt2 = new JButton("로그아웃");
 		bt2.setBounds(575, 350, 150, 100);
 		
-		bt3 = new JButton("exit");
-		bt3.setBounds(650, 550, 60, 30);
 		
-		bt3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		
 		lb1 = new JLabel("영화 제목");
 		lb1.setBounds(50, 110, 100, 30);
@@ -95,7 +93,10 @@ class Add_movie extends Frame {
 			}
 		});
 		
+		
+		
 		add(bt1); add(bt2);
+	
 		
 		add(lb1); add(tf1);
 		add(lb2); add(tf2);
