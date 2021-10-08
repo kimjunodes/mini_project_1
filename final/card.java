@@ -133,6 +133,8 @@ class card extends Frame {
 						psmt.setInt(1, nextNumber);
 						psmt.setString(2,id);
 						psmt.execute();
+						
+						JOptionPane.showMessageDialog(null, "예매가 완료되었습니다.");
 						dispose();
 						new UserFrame(con,"영화 예매",id);
 					}

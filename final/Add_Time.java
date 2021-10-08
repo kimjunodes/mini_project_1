@@ -96,7 +96,8 @@ class Add_Time extends Frame {
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(null, "형식에 맞게 입력하세요");
 				}
-				
+				dispose();
+				new AdminFrame(con);
 				}	
 			}
 		});
