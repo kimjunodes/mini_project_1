@@ -69,26 +69,26 @@ public class Modify_member extends Frame {
 							psm = con.prepareStatement(UPD);
 							
 							String resultPW = "";
-							resultPW = JOptionPane.showInputDialog("패스워드를 입력하세요: ");
-							System.out.println(resultPW);
 							String resultPN = "";
-							resultPN = JOptionPane.showInputDialog("핸드폰 번호를 입력하세요: ");
-							System.out.println(resultPN);
 							String resultADDR = "";
-							resultADDR = JOptionPane.showInputDialog("주소를 입력하세요: ");
-							System.out.println(resultADDR);
+							resultPW = JOptionPane.showInputDialog(null,"패스워드를 입력하세요: ");
+							if(resultPW!=null)
+								resultPN = JOptionPane.showInputDialog(null,"핸드폰 번호를 입력하세요: ");
+								if(resultPN!=null)
+									resultADDR = JOptionPane.showInputDialog(null,"주소를 입력하세요: ");
 							
-							
-							psm.setString(1, resultPW);
-							psm.setString(2, resultPN);
-							psm.setString(3, resultADDR);
-							psm.setString(4, id);
-							psm.execute();
+							if(resultPW!=null&&resultPN!=null&&resultADDR!=null) {
+								psm.setString(1, resultPW);
+								psm.setString(2, resultPN);
+								psm.setString(3, resultADDR);
+								psm.setString(4, id);
+								psm.execute();
 
-							JOptionPane.showMessageDialog(null, "수정이 완료되었습니다.", "정보수정",
-									JOptionPane.INFORMATION_MESSAGE);
-							new UserFrame(con,"User Menu",id);
-
+								JOptionPane.showMessageDialog(null, "수정이 완료되었습니다.", "정보수정",
+										JOptionPane.INFORMATION_MESSAGE);
+								dispose();
+								new UserFrame(con,"User Menu",id);
+							}
 						} catch (SQLException e2) {
 							JOptionPane.showMessageDialog(null, "개발자의 미슥테이크2");
 						}
