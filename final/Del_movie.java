@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -30,7 +30,7 @@ class Del_movie extends Frame{
 	JComboBox jbox2 = new JComboBox();
 	
 	Del_movie(Connection con, String title){
-		super(con,title);
+		super(con,"영화 삭제");
 		this.con = con;
 		
 		sql = "Select * from movie_Table";
@@ -115,7 +115,7 @@ class Del_movie extends Frame{
 						}
 						
 						int result = 0;
-						result = JOptionPane.showConfirmDialog(null, "해당 영화를 삭제하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+						result = JOptionPane.showConfirmDialog(null, "해당 영화를 삭제하시겠습니까?", "Message", JOptionPane.YES_NO_OPTION);
 						if (result == JOptionPane.YES_OPTION) {
 							sql1 = "delete from movie where m_id = ?";
 							psmt1 = con.prepareStatement(sql1);
@@ -139,7 +139,7 @@ class Del_movie extends Frame{
 				}catch (NullPointerException e2) {
 					int result = 0;
 					result = JOptionPane.showConfirmDialog(null, "해당 영화에 배정된 시간이 없습니다. "
-							+ "해당 영화를 삭제하시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+							+ "해당 영화를 삭제하시겠습니까?", "Message", JOptionPane.YES_NO_OPTION);
 					if (result == JOptionPane.YES_OPTION) {
 						sql1 = "delete from movie_table where m_name = '" + name + "'";
 						try {

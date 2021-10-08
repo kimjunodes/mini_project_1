@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 import java.sql.*;
 import java.util.Scanner;
 

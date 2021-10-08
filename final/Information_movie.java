@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -78,7 +78,7 @@ class Information_movie extends Frame {
 			
 			bt1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(null, story1 ,"¡Ÿ∞≈∏Æ", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, story1 ,"Message", JOptionPane.INFORMATION_MESSAGE);
 				}
 			});
 			

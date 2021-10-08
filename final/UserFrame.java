@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -94,15 +94,15 @@ class UserFrame extends Frame {
 		ticket_check.addActionListener(event -> {
 			// 예매 정보 확인 메세지 창
 			if(lists.isEmpty())
-				JOptionPane.showMessageDialog(null, "예매한 목록이 없습니다.","예매확인", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "예매한 목록이 없습니다.","Message", JOptionPane.INFORMATION_MESSAGE);
 			else
-				JOptionPane.showMessageDialog(null, lists, "예매확인", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, lists, "Message", JOptionPane.INFORMATION_MESSAGE);
 		});
 		
 		ticket_cancel.addActionListener(event -> {
 			// 예매 정보와 YES NO 확인 창 생성
 			if(lists.isEmpty())
-				JOptionPane.showMessageDialog(null, "예매한 목록이 없습니다.","예매확인", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "예매한 목록이 없습니다.","Message", JOptionPane.INFORMATION_MESSAGE);
 			else {
 				result = JOptionPane.showConfirmDialog(null, lists + "\n"+
 						"해당 영화를 삭제 하시겠습니까?", "예매확인",JOptionPane.YES_NO_OPTION);

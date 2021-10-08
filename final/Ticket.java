@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -105,7 +105,7 @@ class Ticket extends Frame{
 		    			JOptionPane.showMessageDialog(null, "예매가 된 영화입니다.");
 		    		}else {
 		    			int result = JOptionPane.showConfirmDialog(null,"영화 시간 : " + date + "\n"
-								+"영화명 : "+ name,"예매 확인",JOptionPane.YES_NO_OPTION);
+								+"영화명 : "+ name,"Message",JOptionPane.YES_NO_OPTION);
 		    			if (result == 0) {
 		    				new Ticket_m(con,id ,M_id);
 		    				dispose();

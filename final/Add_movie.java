@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -100,7 +100,7 @@ class Add_movie extends JFrame{
 		bt1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
-				result = JOptionPane.showConfirmDialog(null, "정보가 잘 입력됐는지 확인해보시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+				result = JOptionPane.showConfirmDialog(null, "정보가 잘 입력됐는지 확인해보시겠습니까?", "Message", JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
 						m_name = tname.getText();
 						actor = tactor.getText();
@@ -147,7 +147,7 @@ class Add_movie extends JFrame{
 		
 		bt2 = new JButton("영화 추가");
 		bt2.setBounds(565, 240, 150, 80); add(bt2);
-		bt2.setVisible(false);
+		bt2.setVisible(true);
 		
 		bt2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
