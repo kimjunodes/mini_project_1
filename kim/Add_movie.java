@@ -27,12 +27,14 @@ public class Add_movie extends JFrame{
 	JLabel lname, lactor, ldir, ltime, lage, lstory, lrun, lprice;
 	JTextField tname, tactor, tdir, ttime, tage, trun, tprice;
 	JTextArea tstory;
-	int age, run_time, price, m_id;
+	String Tage, Trun_time, Tprice;
 	String m_name, actor, dir, mt_time, story;
+	int age, run_time, price;
+	
 	ResultSet rs;
 	PreparedStatement pstmt1, pstmt2;
 	String mt_sql = "insert into movie_table (m_name, actor, dir, mt_time, age, story, run_time, price) "
-			+ "values (?, ?, ?, to_date(?, 'rr/mm/dd HH24:mi:ss'), ?, ?, ?, ?) ";
+			+ "values (?, ?, ?, to_date(?, 'rr/mm/dd'), ?, ?, ?, ?) ";
 	
 	Add_movie(Connection con){
 		this.con = con;
@@ -58,7 +60,7 @@ public class Add_movie extends JFrame{
 		lactor.setBounds(50, 185, 100, 30); add(lactor);
 		ldir = new JLabel("감독 이름");
 		ldir.setBounds(300, 185, 100, 30); add(ldir);
-		ltime = new JLabel("상영 시간 (yy/MM/dd HH:mm:ss)");
+		ltime = new JLabel("개봉 날짜 (yy/MM/dd)");
 		ltime.setBounds(50, 260, 200, 30); add(ltime);
 		lrun = new JLabel("러닝타임");
 		lrun.setBounds(300, 260, 100, 30); add(lrun);
@@ -67,21 +69,21 @@ public class Add_movie extends JFrame{
 		lstory = new JLabel("스토리 (한글 : 100자, 영어 : 200자)");
 		lstory.setBounds(180, 375, 450, 105); add(lstory);
 		
-		tname = new JTextField(); //m_name
+		tname = new JTextField(""); //m_name
 		tname.setBounds(50, 150, 200, 25); add(tname);
-		tage = new JTextField(); //age
+		tage = new JTextField(""); //age
 		tage .setBounds(300, 150, 200, 25); add(tage);
-		tactor = new JTextField(); //actor
+		tactor = new JTextField(""); //actor
 		tactor.setBounds(50, 225, 200, 25); add(tactor);
-		tdir = new JTextField(); //dir
+		tdir = new JTextField(""); //dir
 		tdir.setBounds(300, 225, 200, 25); add(tdir);
-		ttime = new JTextField(); //time
+		ttime = new JTextField(""); //time
 		ttime.setBounds(50, 300, 200, 25); add(ttime);
-		trun = new JTextField(); //run
+		trun = new JTextField(""); //run
 		trun.setBounds(300, 300, 200, 25); add(trun);
-		tprice = new JTextField(); //price
+		tprice = new JTextField(""); //price
 		tprice.setBounds(50, 375, 200, 25); add(tprice);
-		tstory = new JTextArea(); //story
+		tstory = new JTextArea(""); //story
 		tstory.setBounds(50, 450, 450, 95); add(tstory);
 		tstory.setEditable(true);
 		tstory.setLineWrap(true);
@@ -104,22 +106,34 @@ public class Add_movie extends JFrame{
 						actor = tactor.getText();
 						dir = tdir.getText();
 						mt_time = ttime.getText();
-						age = Integer.parseInt(tage.getText());
+						Tage = tage.getText();
 						story = tstory.getText();
-						run_time = Integer.parseInt(trun.getText());
-						price = Integer.parseInt(tprice.getText());
+						Trun_time = trun.getText();
+						Tprice = tprice.getText();
 						
-						if(m_name.length() == 1 || actor.length() < 1 || dir.length() < 1 
-								|| mt_time.length() < 1 ||  story.length() < 1) {
-							JOptionPane.showMessageDialog(null, "누락된 항목이 있거나 형식에 맞지 않는 항목이 있습니다.");
+						
+						try {
+							if(m_name.isBlank() || actor.isBlank() || dir.isBlank()
+									|| mt_time.isBlank() ||  story.isBlank()
+									|| Tage.isBlank() || Trun_time.isBlank() || Tprice.isBlank()) {
+								JOptionPane.showMessageDialog(null, "누락된 항목이 있습니다.");
+							}
+							
+							else if(Integer.parseInt(Tage) < 0 || Integer.parseInt(Trun_time) < 1 || Integer.parseInt(Tprice) < 0) {
+								JOptionPane.showMessageDialog(null, "나이, 러닝타임, 가격은 정수로 입력해주세요.");
+							}
+							
+							else {
+								age = Integer.parseInt(Tage);
+								run_time = Integer.parseInt(Trun_time);
+								price = Integer.parseInt(Tprice);
+								JOptionPane.showMessageDialog(null, "이상 없습니다.");
+								bt2.setVisible(true);
+							}
+						} catch(NumberFormatException e1) {
+							JOptionPane.showMessageDialog(null, "누락된 항목이 있습니다.");
 						}
-						else if(age < 1 || run_time < 1 || price < 1) {
-							JOptionPane.showMessageDialog(null, "나이, 상영시간, 가격은 정수로 입력해야 합니다.");
-						}
-						else {
-						JOptionPane.showMessageDialog(null, "이상 없습니다.");
-						add(bt2);
-						}
+						
 					
 				}
 				else if (result == JOptionPane.CLOSED_OPTION) {
@@ -132,7 +146,8 @@ public class Add_movie extends JFrame{
 		});
 		
 		bt2 = new JButton("영화 추가");
-		bt2.setBounds(565, 240, 150, 80);
+		bt2.setBounds(565, 240, 150, 80); add(bt2);
+		bt2.setVisible(false);
 		
 		bt2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -149,8 +164,10 @@ public class Add_movie extends JFrame{
 					pstmt2.execute();
 
 					JOptionPane.showMessageDialog(null, "정상적으로 추가되었습니다.");
+
 					dispose();
 					new Add_movie(con);
+					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, "오류 발생... Add_movie.bt2");
