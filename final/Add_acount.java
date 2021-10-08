@@ -73,22 +73,23 @@ class Add_acount extends Frame{
 					id = jf1.getText();
 					sst = con.prepareStatement(SearchSQL);
 					rs = sst.executeQuery();
+					int i=0;
 					
 					while(rs.next()) {
 						if(rs.getString("USER_ID").equals(id)) {
 							JOptionPane.showMessageDialog(null, "이미 존재하는 아이디입니다.");
+							i++;
 							break;
 						}else if(id.length()<4) {
 							JOptionPane.showMessageDialog(null, "아이디를 4글자 이상 입력해주세요.");
+							i++;
 							break;
-						}else {
-							JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
-							ist.setString(1, id);
-							break;
-
 						}
 					}
-					
+					if(i==0) {
+						JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
+						ist.setString(1, id);
+					}
 				} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(null, "개발자의 미슥테이크2");
 				}
