@@ -14,9 +14,11 @@ class Add_acount extends Frame{
 	private JButton bt1, bt2, bt3;
 	
 	private PreparedStatement sst, ist;
+	private String id;
 	
-	private static final String SearchSQL = "select m_id from members where m_id = ?";
-	private static final String InsertSQL = "insert into MEMBERS (M_ID, M_PW, P_NUMBER, M_ADDRESS) values (?, ?, ?, ?) ";
+	private String SearchSQL = "select * from members where user_id = '";
+	private String InsertSQL = "insert into MEMBERS (USER_ID, USER_PW, USER_PN, USER_ADDR) values (?, ?, ?, ?) ";
+	ResultSet rs;
 	
 	Connection con;
 	
@@ -60,32 +62,38 @@ class Add_acount extends Frame{
 		
 		try {
 			ist = con.prepareStatement(InsertSQL);
+			
 		} catch (SQLException e2) {
-			JOptionPane.showMessageDialog(null, "개발자의 미슥테이크");
+			JOptionPane.showMessageDialog(null, "개발자의 미슥테이크1");
 		}
 		
 		bt1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String id = jf1.getText();
 				try {
+					id = jf1.getText();
+					SearchSQL += id +"'";
+					System.out.print(SearchSQL);
 					sst = con.prepareStatement(SearchSQL);
-					sst.setString(1, id);
-					ResultSet rs = sst.executeQuery();
-				
-					if(id.length()<4) {
-						JOptionPane.showMessageDialog(null, "아이디를 4글자 이상 입력해주세요.");
-					}
-				
-					else if(rs.next()) {
-						JOptionPane.showMessageDialog(null, "이미 존재하는 아이디입니다.");
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
-						ist.setString(1, id);
+					rs = sst.executeQuery();
+					
+					while(rs.next()) {
+						System.out.print(0);
+						if(rs.getString("USER_ID").equals(id)) {
+							JOptionPane.showMessageDialog(null, "이미 존재하는 아이디입니다.");
+							System.out.print(2);
+						}else if(id.length()<4) {
+							JOptionPane.showMessageDialog(null, "아이디를 4글자 이상 입력해주세요.");
+							System.out.print(1);
+						}else {
+							JOptionPane.showMessageDialog(null, "사용 가능한 아이디입니다.");
+							ist.setString(1, id);
+							System.out.print(3);
+
+						}
 					}
 					
 				} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(null, "개발자의 미슥테이크");
+						JOptionPane.showMessageDialog(null, "개발자의 미슥테이크2");
 				}
 				
 			}
@@ -110,7 +118,6 @@ class Add_acount extends Frame{
 				}
 				else {
 					try {
-						
 						ist.setString(2, pw);
 						ist.setString(3, pn);
 						ist.setString(4, addr);

@@ -1,5 +1,4 @@
 package movie;
-import java.awt.Menu;
 import java.sql.*;
 import java.util.Scanner;
 

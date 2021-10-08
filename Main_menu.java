@@ -33,9 +33,9 @@ class Main_menu extends Frame {
 	Main_menu(Connection con) {
 		super(con,"예매 시스템");
 		this.con = con;
-		sql = "select * from members where (m_id = ? AND m_pw = ?)";
-		sql2 = "select * from members where p_number = ?";
-		sql3 = "select * from members where m_id = ? AND p_number = ?";
+		sql = "select * from members where (USER_ID = ? AND USER_PW = ?)";
+		sql2 = "select * from members where USER_PN = ?";
+		sql3 = "select * from members where USER_ID = ? AND USER_PN = ?";
 		
 		
 		JLabel lb1 = new JLabel("ID :");
@@ -66,7 +66,7 @@ class Main_menu extends Frame {
 						if("admin".equals(rs.getString(1))) {
 							JOptionPane.showMessageDialog(null, "admin 계정입니다.");
 							dispose();
-							new AdminFrame(con, "Admin Menu");
+							new AdminFrame(con);
 						} else {
 							JOptionPane.showMessageDialog(null, "user 계정입니다.");
 							dispose();

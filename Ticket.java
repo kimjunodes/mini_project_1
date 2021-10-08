@@ -1,6 +1,5 @@
 package movie;
 
-import java.awt.Event;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,8 +53,7 @@ class Ticket extends Frame{
 		lbl2.setFont(getFont().deriveFont(30.0f));
 		getContentPane().add(lbl1);
 		getContentPane().add(lbl2);
-		add(lbl1);
-		add(lbl2);
+		
 		// 예매하기 버튼 이벤트
 		check.addActionListener(new ActionListener() {
 			@Override
@@ -67,19 +65,36 @@ class Ticket extends Frame{
 		        	psmt = con.prepareStatement(sql);	
 		        	rs = psmt.executeQuery();
 		    		while(rs.next()) {
-		    			if(date.equals(simpleDateFormat.format(rs.getTimestamp("TIME")))) {
+		    			if(date.equals(simpleDateFormat.format(rs.getTimestamp("M_TIME")))) {
 		    				M_id = rs.getInt("M_ID");
+		    				break;
+		    			}
+		    		}
+		    		
+		    		boolean bool =true;
+		    		sql = "select * from ticket";
+		        	psmt = con.prepareStatement(sql);	
+		        	rs = psmt.executeQuery();
+		    		while(rs.next()) {
+		    			if(rs.getInt("M_ID") == M_id) {
+		    				bool = false;
+		    				break;
+		    			}
+		    		}
+		    		if (!bool) {
+		    			JOptionPane.showMessageDialog(null, "예매가 된 영화입니다.");
+		    		}else {
+		    			int result = JOptionPane.showConfirmDialog(null,"영화 시간 : " + date + "\n"
+								+"영화명 : "+ name,"예매 확인",JOptionPane.YES_NO_OPTION);
+		    			if (result == 0) {
+		    				new Ticket_m(con,id ,M_id);
+		    				dispose();
 		    			}
 		    		}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-				int result = JOptionPane.showConfirmDialog(null, "영화 시간 : " + date + "\n"
-							+"영화명 : "+ name,"예매 확인",JOptionPane.YES_NO_OPTION);
-		        if (result == 0) {
-		        	new Ticket_m(con, "예매 확인",id ,M_id);
-		        	dispose();
-		        }
+				
 			}
 		});
 		
@@ -103,7 +118,7 @@ class Ticket extends Frame{
 		        	rs = psmt.executeQuery();
 		    		String date= null;
 		    		while(rs.next()) {
-		    			da = rs.getTimestamp("TIME");
+		    			da = rs.getTimestamp("M_TIME");
 		    			date = simpleDateFormat.format(da);
 		    			jBox2.addItem(date);
 		    			
@@ -115,13 +130,6 @@ class Ticket extends Frame{
 				date = jBox2.getSelectedItem().toString();
 			}
 			
-		});
-		jBox2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				
-			}
 		});
 	}
 	

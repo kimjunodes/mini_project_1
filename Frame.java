@@ -65,4 +65,11 @@ class Frame extends JFrame {
 	      }
 	      return con;
 	   }
+	
+	
+	public static void main(String[] args) throws SQLException  {
+		Connection con = makeConnection();
+		new Frame(con,"abc");
+	}
+	
 }
