@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.DriverManager;

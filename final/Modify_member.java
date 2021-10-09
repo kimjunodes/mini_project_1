@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -61,7 +61,7 @@ public class Modify_member extends Frame {
 			}
 			messageBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					int flag = JOptionPane.showConfirmDialog(null, " 정보를 수정하시겠습니까 ?", "정보수정",
+					int flag = JOptionPane.showConfirmDialog(null, " 정보를 수정하시겠습니까 ?", "Message",
 							JOptionPane.YES_NO_OPTION);
 					if (flag == 0) {
 						try {
@@ -84,7 +84,7 @@ public class Modify_member extends Frame {
 								psm.setString(4, id);
 								psm.execute();
 
-								JOptionPane.showMessageDialog(null, "수정이 완료되었습니다.", "정보수정",
+								JOptionPane.showMessageDialog(null, "수정이 완료되었습니다.", "Message",
 										JOptionPane.INFORMATION_MESSAGE);
 								dispose();
 								new UserFrame(con,"User Menu",id);

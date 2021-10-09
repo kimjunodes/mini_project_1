@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -136,7 +136,7 @@ class card extends Frame {
 						
 						JOptionPane.showMessageDialog(null, "예매가 완료되었습니다.");
 						dispose();
-						new UserFrame(con,"영화 예매",id);
+						new UserFrame(con,"Message",id);
 					}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
@@ -151,7 +151,7 @@ class card extends Frame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new UserFrame(con,"영화 예매",id);
+				new UserFrame(con,"Message",id);
 			}
 		});
 		

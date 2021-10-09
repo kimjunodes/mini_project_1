@@ -1,4 +1,4 @@
-package movie;
+package Mini_project;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,7 +87,7 @@ class Add_Time extends Frame {
 					
 					
 					int result = JOptionPane.showConfirmDialog(null,"영화 시간 : " + tf1.getText() + "\n"
-							+"영화명 : "+ name +"\n" + "상영관 : "+tf2.getText(),"예매 확인",JOptionPane.YES_NO_OPTION);
+							+"영화명 : "+ name +"\n" + "상영관 : "+tf2.getText(),"Message",JOptionPane.YES_NO_OPTION);
 	    			if (result == 0) {
 	    				psmt3.execute();
 	    				JOptionPane.showMessageDialog(null, "시간이 추가되었습니다.");
